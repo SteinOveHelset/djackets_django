@@ -1,0 +1,44 @@
+Commands
+
+Install software on server
+
+	sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx
+	sudo apt install certbot python3-certbot-nginx
+
+Add user group and user
+	sudo groupadd --system webapps
+	sudo useradd --system --gid webapps --shell /bin/bash --home /webapps/djackets djackets
+
+Install Python packages from local server
+	pip install -r req.txt
+
+Install other Python packages
+	pip install psycopg2-binary
+	pip install gunicorn
+
+Create zipfile of the project
+	zip -r djackets_django.zip djackets_django
+
+Install unzip on the server
+	apt install unzip
+
+Make the gunicorn_script file executable
+	chmod +x environment_3_8_2/bin/gunicorn_start
+
+Change the owner ship of this folder and all its children
+	chown -R djackets:webapps .
+
+Install Supervisor (reread, update and restart)
+	apt install supervisor
+	supervisorctl reread
+	supervisorctl update
+	supervisorctl restart djackets_django
+
+Make a symbolic link 
+	ln -s ../sites-available/apidjackets.codewithstein.com .
+
+Get the SSL / HTTPS certificate for the domain
+	sudo certbot -d djackets.codewithstein.com
+
+Restart Nginx
+	service nginx restart
